@@ -47,9 +47,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\EasyLua\EasyLua.csproj">
       <Project>{A6B4EAB4-7974-4AE5-B380-6D99C6818AA2}</Project>
       <Name>EasyLua</Name>

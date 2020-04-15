@@ -11,7 +11,14 @@ namespace Test
     {
         public static void Main(string[] args)
         {
-            Lua a = new Lua("Hello World!");
+            Lua a = new Lua("i = 1 - - 2333");
+
+            foreach (var tk in a.tokens)
+            {
+                Console.Write(tk + " ");
+            }
+
+            a.Run();
 
             Console.ReadKey();
             return;
