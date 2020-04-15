@@ -1,0 +1,6 @@
+# VS
+.vs/*
+
+*/bin
+*/obj
+*/Properties
