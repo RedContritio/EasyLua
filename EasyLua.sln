@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyLua", "EasyLua\EasyLua.csproj", "{A6B4EAB4-7974-4AE5-B380-6D99C6818AA2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document", "Document", "{BC3C5E5C-7C5F-4DB1-99FA-8B2EE9A73DD6}"
+	ProjectSection(SolutionItems) = preProject
+		Document\规则：词法描述.md = Document\规则：词法描述.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

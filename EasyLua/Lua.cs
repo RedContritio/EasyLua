@@ -6,66 +6,71 @@ using System.Threading.Tasks;
 
 namespace EasyLua
 {
+    public enum TOKEN_TYPE
+    {
+        ERROR = -2, EOF = -1,
+
+        NUMBER = 128, STRING, IDENT,
+
+        IF, ELSEIF, ELSE,
+        GOTO, BREAK,
+        FOR, WHILE, REPEAT, UNTIL,
+        THEN, DO, END,
+        TRUE, FALSE, NIL,
+        AND, OR, NOT, IN,
+        LOCAL, FUNCTION, RETURN,
+
+        ASSIGN, ADD, SUB, MUL, DIV, MOD, POW,
+        LENGTH, DOTDOT,
+        EQ, NEQ, LT, LE, GT, GE,
+        OPENPA, CLOSEPA, OPENBR, CLOSEBR,
+        COMMA
+    }
+
+    public class Token
+    {
+        private static readonly EnumHelper<TOKEN_TYPE> helper = new EnumHelper<TOKEN_TYPE>();
+
+        public int row, col;
+        public TOKEN_TYPE type;
+        public object value = null;
+        public Token(TOKEN_TYPE _type, int _row, int _col, object _value = null)
+        {
+            row = _row; col = _col;
+            type = _type; value = _value;
+        }
+        public static Token convert(Token src)
+        {
+            if (src.type != TOKEN_TYPE.IDENT || src.value == null) return src;
+            int v = helper.getTokenValue((string)src.value);
+            if (v != -1) return new Token((TOKEN_TYPE)v, src.row, src.col);
+            return src;
+        }
+
+        public override string ToString()
+        {
+            if (type == TOKEN_TYPE.IDENT || type == TOKEN_TYPE.STRING)
+                return String.Format("<{0}, {1}>", helper.getTokenName((int)type), (string)value);
+            if (type == TOKEN_TYPE.NUMBER)
+                return String.Format("<{0}, {1}>", helper.getTokenName((int)type), (int)value);
+            else
+                return String.Format("<{0}>", helper.getTokenName((int)type));
+        }
+    }
     public class Lua
     {
-        public enum TOKEN_TYPE
-        {
-            ERROR = -2, EOF = -1,
-
-            NUMBER = 128, STRING, IDENT,
-
-            IF, ELSEIF, ELSE,
-            GOTO, BREAK, 
-            FOR, WHILE, REPEAT, UNTIL,
-            THEN, DO, END,
-            TRUE, FALSE, NIL,
-            AND, OR, NOT, IN,
-            LOCAL, FUNCTION, RETURN,
-
-            ASSIGN, ADD, SUB, MUL, DIV, MOD, POW,
-            LENGTH, DOTDOT,
-            EQ, NEQ, LT, LE, GT, GE,
-            OPENPA, CLOSEPA, OPENBR, CLOSEBR,
-            COMMA
-        }
-
-        public class Token
-        {
-            private static readonly EnumHelper<TOKEN_TYPE> helper = new EnumHelper<TOKEN_TYPE>();
-
-            public int row, col;
-            public TOKEN_TYPE type;
-            public object value = null;
-            public Token(TOKEN_TYPE _type, int _row, int _col, object _value = null)
-            {
-                row = _row; col = _col;
-                type = _type; value = _value;
-            }
-            public static Token convert(Token src)
-            {
-                if(src.type != TOKEN_TYPE.IDENT || src.value == null) return src;
-                int v = helper.getTokenValue((string) src.value);
-                if(v != -1) return new Token((TOKEN_TYPE) v, src.row, src.col);
-                return src;
-            }
-
-            public override string ToString()
-            {
-                if(type == TOKEN_TYPE.IDENT || type == TOKEN_TYPE.STRING)
-                    return String.Format("<{0}, {1}>", helper.getTokenName((int) type), (string)value);
-                if (type == TOKEN_TYPE.NUMBER)
-                    return String.Format("<{0}, {1}>", helper.getTokenName((int)type), (int)value);
-                else
-                    return String.Format("<{0}>", helper.getTokenName((int)type));
-            }
-        }
-
         public List<Token> tokens;
+        public IAST ast = new Chunk();
         public Lua(string script)
         {
             tokens = Tokenize(script);
         }
 
+        public bool Compile()
+        {
+            int pos = 0;
+            return ast.Generate(tokens, ref pos);
+        }
         public void Run()
         {
             return ;

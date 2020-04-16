@@ -18,7 +18,11 @@ namespace Test
                 Console.Write(tk + " ");
             }
 
+            Console.WriteLine("Compiling ... {0}", a.Compile());
+
+            Console.WriteLine(a.ast);
             a.Run();
+
 
             Console.ReadKey();
             return;
