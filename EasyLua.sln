@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document", "Document", "{BC3C5E5C-7C5F-4DB1-99FA-8B2EE9A73DD6}"
 	ProjectSection(SolutionItems) = preProject
 		Document\规则：词法描述.md = Document\规则：词法描述.md
+		Document\规则：语法描述.md = Document\规则：语法描述.md
 	EndProjectSection
 EndProject
 Global

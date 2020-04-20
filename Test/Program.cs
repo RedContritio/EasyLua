@@ -11,16 +11,21 @@ namespace Test
     {
         public static void Main(string[] args)
         {
-            Lua a = new Lua("i = 1 - - 2333");
-
-            foreach (var tk in a.tokens)
-            {
-                Console.Write(tk + " ");
-            }
+            Lua a = new Lua(
+                "i = print\n" +
+                "do\n" +
+                "print = \"Hello\"\n" +
+                "print = print .. \" World!\"\n" +
+                "end\n" +
+                "i(print)");
 
             Console.WriteLine("Compiling ... {0}", a.Compile());
 
             Console.WriteLine(a.ast);
+
+            Console.WriteLine("Running ... ");
+
+            a.vm.debug = true;
             a.Run();
 
 

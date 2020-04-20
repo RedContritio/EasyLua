@@ -61,18 +61,25 @@ namespace EasyLua
     {
         public List<Token> tokens;
         public IAST ast = new Chunk();
+        public LuaVM vm = new LuaVM();
         public Lua(string script)
         {
             tokens = Tokenize(script);
         }
 
-        public bool Compile()
+        private bool Generate()
         {
             int pos = 0;
             return ast.Generate(tokens, ref pos);
         }
+
+        public bool Compile()
+        {
+            return Generate() && ast.Compile(ref vm);
+        }
         public void Run()
         {
+            vm.Run();
             return ;
         }
 
@@ -242,7 +249,7 @@ namespace EasyLua
             foreach (var value in ISvalues)
             {
                 dict_tk2str.Add(Convert.ToInt32(value), value.ToString());
-                dict_str2tk.Add(value.ToString(), Convert.ToInt32(value));
+                dict_str2tk.Add(value.ToString().ToLower(), Convert.ToInt32(value));
             }
         }
         public string getTokenName(int tk)
